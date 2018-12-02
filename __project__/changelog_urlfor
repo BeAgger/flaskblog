@@ -1,0 +1,53 @@
+Searching 44 files for "url_for('"
+
+/xxx/flaskblog/posts/routes.py:
+   53:         return redirect(url_for('home'))
+   81:         return redirect(url_for('post', 
+/xxx/flaskblog/templates/home.html:
+    6: 			<img class="rounded-circle article-img" src="{{ url_for('static', 
+    9: 					<a class="mr-2" href="{{ url_for('user_posts', 
+   12: 				<h2><a class="article-title" href="{{ url_for('post', 
+   21: 				<a class="btn btn-info mb-4" href="{{ url_for('home', 
+   23: 				<a class="btn btn-outline-info mb-4" href="{{ url_for('home', 
+/xxx/flaskblog/templates/layout.html:
+   12: 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', 
+   32: 	          <a class="nav-item nav-link" href="{{ url_for('home') 
+   33: 	          <a class="nav-item nav-link" href="{{ url_for('about')
+   38: 		          <a class="nav-item nav-link" href="{{ url_for('new_post')
+   39: 		          <a class="nav-item nav-link" href="{{ url_for('account')
+   40: 		          <a class="nav-item nav-link" href="{{ url_for('logout')
+   42: 		          <a class="nav-item nav-link" href="{{ url_for('login')
+   43: 		          <a class="nav-item nav-link" href="{{ url_for('register')
+   74: 	            	<a href="{{ url_for('latest_posts')
+/xxx/flaskblog/templates/login.html:
+   44: 				<a href="{{ url_for('reset_request')
+   50: 			Need an account? <a class="ml-2" href="{{ url_for('register')
+/xxx/flaskblog/templates/post.html:
+    5: 		<img class="rounded-circle article-img" src="{{ url_for('static',
+   12: 						<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_post', 
+   30: 							<form action="{{ url_for('delete_post', 
+/xxx/flaskblog/templates/register.html:
+   69: 			Already have an account? <a class="ml-2" href="{{ url_for('login')
+/xxx/flaskblog/templates/user_posts.html:
+    7: 			<img class="rounded-circle article-img" src="{{ url_for('static',
+   10: 					<a class="mr-2" href="{{ url_for('user_posts', 
+   13: 				<h2><a class="article-title" href="{{ url_for('post', 
+   22: 				<a class="btn btn-info mb-4" href="{{ url_for('user_posts',
+   24: 				<a class="btn btn-outline-info mb-4" href="{{ url_for('user_posts',
+/xxx/flaskblog/users/routes.py:
+   56:         return redirect(url_for('home'))
+   72:         return redirect(url_for('login'))
+   82:         return redirect(url_for('home'))
+   92:             return redirect(next_page) if next_page else redirect(url_for('home'))
+  103:     return redirect(url_for('home'))
+  121:         return redirect(url_for('account'))
+  128:     image_file = url_for('static',
+  154:         return redirect(url_for('home'))
+  163:         return redirect(url_for('login'))
+  172:         return redirect(url_for('home'))
+  177:         return redirect(url_for('reset_request'))
+  184:         return redirect(url_for('login'))
+/xxx/flaskblog/users/utils.py:
+   54: To reset your password, click this link: {url_for('reset_token', 
+
+41 matches across 9 files

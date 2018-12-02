@@ -3,7 +3,8 @@ Entity models
 """
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flaskblog import db, login_mgmr, app
+from flask import current_app
+from flaskblog import db, login_mgmr
 from flask_login import UserMixin
 """
 Imports:
@@ -13,7 +14,7 @@ Imports:
     flaskblog:
         db (database created in flaskblog.py)
         login_manager to handle logged in users, def load_user
-        app to get the secret key, used in User
+        current_app to get the secret key, used in User
     flask_login:
         UserMixin to add required attributes and functions, inherited in User class
 """
@@ -41,14 +42,14 @@ class User(db.Model, UserMixin):
 
     def get_reset_token(self, expires_sec=1800):
         """get_reset_token"""
-        s = Serializer(app.config['SECRET_KEY'], expires_sec)
+        s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
         return s.dumps({'user_id': self.id}).decode('utf-8')
 
     # decorator to tell py not to expect the self parameter as an argument
     @staticmethod
     def verify_reset_token(token):
         """verify_reset_token"""
-        s = Serializer(app.config['SECRET_KEY'])
+        s = Serializer(current_app.config['SECRET_KEY'])
         # handle SignatureExpired exeption
         try:
             user_id = s.loads(token)['user_id']
@@ -77,5 +78,3 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
-
-

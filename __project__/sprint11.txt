@@ -1,0 +1,119 @@
+Blueprints
+
+Restructure to use flask blueprints
+Move config vars to file
+Move app createn to own function -> create different instances on the app (App factory)
+
+
+
+Activate virtualenv
+$ cd ../Environments
+$ source flaskblog_env/bin/activate
+
+# branch it
+$ cd ../flaskblog
+$ git checkout -b Sprint11
+
+------------------
+
+Break up into blueprints:
+Group related code in modules
+
+Create a blueprint:
+create a pack thats names after the functionality:
+$ cd flaskblog
+$ mkdir -p {users,posts,main}
+$ touch {users,posts,main}/{__init__.py,routes.py}
+$ touch {users,posts}/forms.py
+$ touch users/utils.py
+
+Users:
+	routes.py:
+		Import Blueprint
+		Move routes specifically to the users module (register in app in __init__.py)
+		Move util functions to utils.py
+	forms.py:
+		Move user forms to user module
+	utils.py:
+		Move utility functions to user module
+
+
+Posts:
+	routes.py
+		Import Blueprint
+		Move routes specifically to the posts module (register in app in __init__.py)
+	forms.py:
+		Move user posts to post module
+
+Main:
+	routes.py
+		Import Blueprint
+		Move routes specifically to the main module (register in app in __init__.py)
+	Add new environment variable to .bash_profile
+		$ source ~/.bash_profile
+		$ echo $SENDER
+
+Add and restructure the imports
+
+Remove the old routes.py and forms.py
+
+__init_.py
+import routes from user, post, main modules
+register the blueprint variables to the app
+
+Change all url_for references to blueprint-var/function-name instead of just function-name
+	Ctrl + Shift + F
+		url_for('
+		/xxx/flaskblog
+	Replace home, about with main.home, main.about
+	Replace new_post, post, update_post, delete_post with posts.*
+	Replace register, login, logout, account, user_posts, reset_request, reset_token with users.*
+
+Change login manager ref to users.login in __init__.py
+
+unittest it all
+
+
+Move config vars to file to be able to run webapp in different environments
+
+cd to app root
+$ touch config.py
+
+Create a config class
+	move app.config vars to class, convert to const
+	move sensitive values to envvars 
+	rename db and set new secret value
+
+Move creation of app to a function
+	cd app root
+	__init__.py:
+	add create_app factory function
+	move app.config and blueprint
+
+Initialize extentions without assigning to the app-var, so the extention-object is not initially bound to the app.
+No app specific state wil then be stored on the extension object, that can be used in multiple apps
+
+Replace all app vars in app with the current_app in all files
+	users/utils.py, models.py
+	import current_app from flask
+	replace app with current_app
+
+run.py:
+	create app from factory function
+
+------------------
+
+$ pip list
+$ pip freeze --local > requirements.txt
+
+backup
+
+$ git status
+$ git add -A
+$ git commit -a -m 'Sprint 11'
+$ git checkout master # get the master
+$ git merge Sprint11 # merge to master
+$ git branch -d Sprint11 # delete the branch
+
+$ git pull origin master
+$ git push origin master

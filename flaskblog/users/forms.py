@@ -1,43 +1,47 @@
 """
-Application forms
+Users.forms:
+    RegistrationForm(FlaskForm)
+    LoginForm(FlaskForm)
+    UpdateAccountForm(FlaskForm)
+    RequestResetForm(FlaskForm)
+    ResetPasswordForm(FlaskForm)
 """
+
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, \
-                    TextAreaField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, \
-                               ValidationError
 from flaskblog.models import User
+
 """
 Imports:
-    flask wt forms:
-        form fields
-    flask_wtf.file
-        filefield, FileAllowed used in update account form
-    flask_login:
-        current_user used in updateaccount form
+    Flask: Blueprints
+    flask wt form
+    flask_wtf.file: filefield, FileAllowed used in update account form
     wt.forms: fields used in forms
     wt forms: validators used in var declaratoins
     wt forms: validationerror used in custom field validation function
+    flask_login: current_user used in updateaccount form
     user model: used in customr field validation function
 """
 
+# Create forms specifically to the users module
 
 class RegistrationForm(FlaskForm):
     """
     Registration Form
     """
     # Create the html field and label, required and between 2-20 chars
-    username = StringField('Username',
-        validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email',
-        validators=[DataRequired(), Email()])
-    password = PasswordField('Password',
-        validators=[DataRequired()])
-        # todo: add minimum length
-    confirm_password = PasswordField('Confirm Password',
-        validators=[DataRequired(), EqualTo('password')])
+    username = \
+        StringField('Username',
+                    validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+               # todo: add minimum length
+    confirm_password = \
+        PasswordField('Confirm Password',
+                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
@@ -54,11 +58,11 @@ class RegistrationForm(FlaskForm):
         if user:
             raise ValidationError('Email already exists. Please choose another.')
 
-
-    def validate_field(self, field):
-        """Validation"""
-        if True:
-            raise ValueError('msg')
+    # Template validate field
+    # def validate_field(self, field):
+    #     """Validation"""
+    #     if True:
+    #         raise ValueError('msg')
 
 
 class LoginForm(FlaskForm):
@@ -66,11 +70,9 @@ class LoginForm(FlaskForm):
     Login form
     """# username = StringField('Username',
     #     validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email',
-        validators=[DataRequired(), Email()])
-    password = PasswordField('Password',
-        validators=[DataRequired()])
-        # todo: add minimum length
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+                             # todo: add minimum length
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
@@ -81,9 +83,9 @@ class UpdateAccountForm(FlaskForm):
     """
     # Create the html field and label, required and between 2-20 chars
     username = StringField('Username',
-        validators=[DataRequired(), Length(min=2, max=20)])
+                           validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email',
-        validators=[DataRequired(), Email()])
+                        validators=[DataRequired(), Email()])
     # profile pic update
     picture = FileField('Update profile picture',
                         validators=[FileAllowed(['jpg', 'png'])])
@@ -109,17 +111,10 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('Email already exists. Please choose another.')
 
 
-class PostForm(FlaskForm):
-    """Show posts"""
-    title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
-    submit = SubmitField('Post it')
-
-
 class RequestResetForm(FlaskForm):
     """Reset pw page to submit reset request"""
     email = StringField('Email',
-        validators=[DataRequired(), Email()])
+                        validators=[DataRequired(), Email()])
     submit = SubmitField('Request password reset')
 
     def validate_email(self, email):
@@ -135,9 +130,9 @@ class ResetPasswordForm(FlaskForm):
     """
     Rest password form
     """
-    password = PasswordField('Password',
-        validators=[DataRequired()])
-        # todo: add minimum length
-    confirm_password = PasswordField('Confirm Password',
-        validators=[DataRequired(), EqualTo('password')])
+    password = PasswordField('Password', validators=[DataRequired()])
+                             # todo: add minimum length
+    confirm_password = \
+        PasswordField('Confirm Password',
+                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset password')

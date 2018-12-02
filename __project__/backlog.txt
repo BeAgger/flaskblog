@@ -2,13 +2,18 @@ Backlog:
 	task: posts per month in sidebar
 	task: add dropdown with per_page selectoin in home pagination
 		type: userstory
-	task: When user logged in write username instead of Login
-		type: userstory
+	task: email validation on register
+		type: userstory, backend
+	task: pw strength meter
+		type: userstory	
 	task: update user account form pic: edit when click on image, not separate field
 		type: userstory
 	task: user change picture: delete old image from desk
 		type: backend
-	task: email validation on register
-		type: userstory, backend
 	task: UserService-class handling db stuff, not the routes: register(), login()
 		type: backend
+
+Done:
+	task: When user logged in write username instead of Login
+		type: userstory
+		sprint: 7

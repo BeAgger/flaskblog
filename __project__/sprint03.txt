@@ -1,0 +1,37 @@
+Create basic forms and user input
+
+
+Activate virtualenv
+$ cd ../Environments
+$ source flaskblog_env/bin/activate
+
+Install wt forms
+$ pip install flask-wtf
+
+Create forms container
+$ cd ..\flaskblog
+$ touch forms.py
+
+adding secret key from py
+>>> import secrets
+>>> secrets.token_hex(24)
+
+
+created basic register and login routes in flaskblog.py
+created basic register and login forms in forms.py
+created register.html: added html, css and flask-form code 
+extended register form function with:
+	form validatation check
+	redirect to homepage
+added flash messages to layout.html: {% with messages...
+
+registration form template:
+	added validation feedback
+
+added login form template
+
+added dummy user data to test login 
+
+layout.html: changed direct links to url_for
+
+

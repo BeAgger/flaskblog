@@ -1,0 +1,48 @@
+Sprint 1:
+
+Project setup:
+In dev/py3/Environments
+$ virtualenv -p /usr/bin/python3.6 fblog_env
+$ source flaskblog_env/bin/activate
+$ pip install flask
+$ pip list
+$ pip freeze --local > requirements.txt
+$ cd ../flaskblog
+
+check flask install
+$ python
+>>> import flask
+>>> exit()
+
+http://flask.pocoo.org/
+
+add flask main flie to path:
+export FLASK_APP=flaskblog.py 
+# set FLASK_APP=flaskblog.py # windows
+# $env:FLASK_APP = "hello.py" # windows ps
+where flaskblog.py = main flask app file
+
+to avoid restart server when making minor changes, set flask to run in debug-mode:
+$ export FLASK_DEBUG=1
+
+remove envvar:
+$ unset FLASK_DEBUG
+
+see it:
+$ echo $FLASK_DEBUG
+
+running in debug mode without env-var:
+# flaskblog.py:
+...
+if __name__ == '__main__':
+    app.run(debug=True)
+$ python flaskblog.py
+
+Dummy data.
+
+
+Sprint 2:
+Templates
+
+Creating template (layout.html) for home and about.
+Adding bootstrap 

@@ -1,0 +1,55 @@
+Restructure as package
+
+Activate virtualenv
+$ cd ../Environments
+$ source flaskblog_env/bin/activate
+
+# branch it
+$ cd ../flaskblog
+$ git checkout -b Sprint05
+
+$ touch models.py
+move User and Post class to models.py
+
+nb! when import py runs the entire module, not only the section, class...
+
+$ mkdir flaskblog
+$ cd flaskblog
+$ touch __init__.py in 
+this is where we init our app
+move all to flaskblog-folder but flaskblog.py and project files:
+$ mv static flaskblog
+$ mv templates flaskblog
+$ mv forms.py flaskblog
+$ mv models.py flaskblog
+$ mv site.db flaskblog
+
+move imports and app.config and db to __init__.py
+
+new folder route
+move routes to route/routes.py
+
+mv flaskblog.py run.py
+move imports around to match
+beware of circular imports
+
+
+recreate db
+$ python
+>>> from flaskblog import db
+>>> db.drop_all()
+>>> from flaskblog.models import User, Post
+>>> User.query.all()
+[]
+good
+
+
+# commit, merge
+$ git add -A
+$ git commit -a -m 'Sprint 5'
+# get the master
+$ git checkout master
+# merge to master
+$ git merge Sprint05
+# delete the branch
+$ git branch -d Sprint05

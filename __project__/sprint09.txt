@@ -1,0 +1,122 @@
+Pagination
+
+Add pagination
+Sort posts (newest to oldest)
+Show post per user
+
+
+Activate virtualenv
+$ cd ../Environments
+$ source flaskblog_env/bin/activate
+
+# branch it
+$ cd ../flaskblog
+$ git checkout -b Sprint09
+
+------------------
+
+import json data to db (__temp__\import_json.py) 
+
+test the sqlalchemy paginate
+>>> from flaskblog import flaskblog.models
+>>> posts = Post.query.all()
+>>> for post in posts:
+...     print(post)
+
+>>> posts = Post.query.paginate()
+>>> posts
+<flask_sqlalchemy.Pagination object at 0x7fba59d86710>
+>>> # which methods do the paginate object have:
+>>> dir(posts)
+['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'has_next', 'has_prev', 'items', 'iter_pages', 'next', 'next_num', 'page', 'pages', 'per_page', 'prev', 'prev_num', 'query', 'total']
+>>> # posts per page, default 20
+>>> posts.per_page
+20
+>>> # which page are we on
+>>> posts.page
+1
+>>> # chich posts (items) are on the page
+>>> for post in posts.items:
+...     print(post)
+... 
+Post('Blog post 1', '2018-11-25 10:30:41.423614')
+Post('Blog xyz', '2018-11-25 11:31:01.745321')
+Post('My Updated Post', '2018-09-19 00:00:00')
+Post('A Second Post', '2018-09-29 00:00:00')
+Post('Top 5 Programming Lanaguages', '2018-05-10 00:00:00')
+Post('Sublime Text Tips and Tricks', '2018-03-28 00:00:00')
+...
+Post('Python and Physics', '2018-08-13 00:00:00')
+Post('Just A Few More Healines Should Do It', '2018-04-13 00:00:00')
+Post('Music To Listen To While Coding', '2018-04-11 00:00:00')
+>>> # goto next page
+>>> posts = Post.query.paginate(page=2)
+>>> for post in posts.items:
+...     print(post)
+... 
+Post('5 Tips for Writing Catchy Headlines', '2018-06-08 00:00:00')
+Post('The Rise of Data Science', '2018-03-12 00:00:00')
+Post('Best Videos For Learning Python', '2018-09-09 00:00:00')
+Post('Top 10 Python Tips and Tricks', '2018-10-06 00:00:00')
+Post('Top 5 YouTube Channels For Learning Programming', '2018-04-06 00:00:00')
+Post('My Latest Updated Post', '2018-03-25 00:00:00')
+>>> # 5 items per page
+>>> posts = Post.query.paginate(per_page=5)
+>>> for post in posts.items:
+...     print(post)
+... 
+Post('Blog post 1', '2018-11-25 10:30:41.423614')
+Post('Blog xyz', '2018-11-25 11:31:01.745321')
+Post('My Updated Post', '2018-09-19 00:00:00')
+Post('A Second Post', '2018-09-29 00:00:00')
+Post('Top 5 Programming Lanaguages', '2018-05-10 00:00:00')
+>>> # page 2:
+>>> posts = Post.query.paginate(per_page=5, page=2)
+>>> # Which page:
+>>> posts.page
+2
+>>> for post in posts.items:
+...     print(post)
+... 
+Post('Sublime Text Tips and Tricks', '2018-03-28 00:00:00')
+Post('Best Python IDEs', '2018-06-21 00:00:00')
+Post('Flask vs Django - Which Is Better?', '2018-03-19 00:00:00')
+Post('You Won't Believe These Clickbait Titles!', '2018-05-30 00:00:00')
+Post('These Beers Will Improve Your Programming', '2018-02-24 00:00:00')
+>>> # how many posts:
+>>> posts.total
+26
+
+
+add pagination to home:
+	route home:
+		paginate query
+		get page 
+	home template add items
+	add pagination links
+
+show posts with newest first
+	route home:
+		order by
+
+add logic to show post per user, when a username is clicked
+	new route from home: user_posts
+	new template from home: user_posts.html
+	update link to user in home
+
+
+
+------------------
+
+$ pip list
+$ pip freeze --local > requirements.txt
+
+$ git status
+$ git add -A
+$ git commit -a -m 'Sprint 9'
+$ git checkout master # get the master
+$ git merge Sprint09 # merge to master
+$ git branch -d Sprint09 # delete the branch
+
+$ git pull origin master
+$ git push origin master

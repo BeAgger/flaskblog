@@ -1,0 +1,62 @@
+User Account and Profile Picture
+
+Finalize user account page and upload profile image
+
+Activate virtualenv
+$ cd ../Environments
+$ source flaskblog_env/bin/activate
+
+# branch it
+$ cd ../flaskblog
+$ git checkout -b Sprint07
+
+------------------
+
+account.html
+	add html with bootstrap
+	add current_user fields
+routes.py
+	image_file: get image from statis/profile_pic
+	pass to form
+forms.py
+	add UpdateAccountForm (cp from RegistrationForm)
+		remove pw fields
+		different validation check
+account.html
+	add the form (cp from regi form)
+	remove pw fields
+	changed css
+routes.py
+	add username, email to fields when the form loads
+		add get, post method
+
+Change profile pic
+	forms.py: import and add filefield
+	account-html: added file field
+	added enctype="multipart/form-data" to form-tag
+	add logic to update pic
+	routes.py
+		add save_picture()
+			save logic, rand filename, import secrets, os
+		account
+			if thers data in picture from form
+				save it
+	resize the image-scale
+		$ pip install Pillow
+		routes-py
+			import Pillow
+
+------------------
+
+$ pip list
+$ pip freeze --local > requirements.txt
+
+$ git status
+$ git add -A
+$ git commit -a -m 'Sprint 7'
+$ git checkout master # get the master
+$ git merge Sprint07 # merge to master
+$ git branch -d Sprint07 # delete the branch
+
+$ git pull origin master
+$ git push origin master

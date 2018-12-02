@@ -1,0 +1,143 @@
+User Authentication
+
+Activate virtualenv
+$ cd ../Environments
+$ source flaskblog_env/bin/activate
+
+# branch it
+$ cd ../flaskblog
+$ git checkout -b Sprint06
+
+------------------
+
+Hashing password
+Salting passwords
+
+$ pip install flask-bcrypt
+
+test bcrypt in py:
+
+>>> from flask_bcrypt import Bcrypt
+>>> bcrypt = Bcrypt()
+>>> bcrypt.generate_password_hash('test')
+b'$2b$12$xZMgfbIoy9kv1yOiJuy7ie4ifv3rjQcqYbEDos2kQ01F1b63gLPi.'
+>>> # in utf:
+... bcrypt.generate_password_hash('test').decode('utf-8')
+'$2b$12$Qw/5bQ1p9tYTY08OiPb1muDFwNWu4eS6vlwuBY1X0qGqDW.wdCkru'
+>>> # different hashed when generated:
+... bcrypt.generate_password_hash('test').decode('utf-8')
+'$2b$12$.dKZT4G.Z46laAhhk4M1zuxRYnZE5mLiD2c0qNuZ/hLdndNKsKwlW'
+>>> # store pw in var to validate
+... hsh_pw = bcrypt.generate_password_hash('test').decode('utf-8')
+>>> bcrypt.check_password_hash(hsh_pw,'xys') # false
+False
+>>> bcrypt.check_password_hash(hsh_pw,'test') # true
+True
+>>> 
+
+Considereations:
+Set BCRYPT_LOG_ROUNDS > 12
+generate_password_hash(password, rounds=13, prefix=None)
+>>> from flask_bcrypt import Bcrypt
+>>> bcrypt = Bcrypt()
+>>> hsh_pw = bcrypt.generate_password_hash('test',13).decode('utf-8')
+>>> bcrypt.check_password_hash(hsh_pw,'test')
+True
+>>> bcrypt.check_password_hash(hsh_pw,'tesxt')
+False
+>>> hsh_pw = bcrypt.generate_password_hash('test',12).decode('utf-8')
+>>> bcrypt.check_password_hash(hsh_pw,'tesxt')
+False
+>>> bcrypt.check_password_hash(hsh_pw,'test')
+True
+>>> exit()
+
+inplemnt bcrypt validation in user auth
+__init__.py:
+	from flask_bcrypt import bcrypt
+	...
+	flask_bcrypt = Bcrypt(app)
+	# to avoid variable name collisions use flask_becrypt and not bcrypt as variable name:
+Namespacing Issues
+It’s worth noting that if you use the format, bcrypt = Bcrypt(app) you are effectively overriding the bcrypt module. Though it’s unlikely you would need to access the module outside of the scope of the extension be aware that it’s overriden.
+Alternatively consider using a different name, such as flask_bcrypt = Bcrypt(app) to prevent naming collisions.
+
+change in routes/registration:
+	add create user in db
+	add pw hashing
+	redirect to login page
+	todo: user-service class should handle logic not the route
+
+create test user in frontend
+
+check in db:
+>>> from flaskblog import db
+>>> from flaskblog.models import User
+>>> User.query.all()
+[User('ben', 'ben@jedi.org', 'default.png')]
+>>> user_1 = User.query.first()
+>>> user_1
+User('ben', 'ben@jedi.org', 'default.png')
+>>> user_1.password
+'$2b$12$1PuI1MdDv7UagLxd10x.G.SbKsL62Z7GZpyG7hnTXF2pYvGrGw.om'
+
+Add handle user trying to register with an existing email:
+ 	import models
+	add field validation to forms.py->registrationform
+		validate_username 
+		validate_email
+
+Add login logic
+	pip install flask-login
+	initialize in __init__.py
+	add to models
+		import login_mgmr
+		add load_user() (from LoginManager website) to get user by id and deco
+		add loginmanager attributes and functions that's required to be in the model:
+			use LoginManagers user mixin module to add these
+			Let User class also inherits UserMixin
+	add login logic to login route
+		todo: userservice
+		import login_user from flask_login
+
+Change Login/Register links in header if user logged in
+	redirect user to home if logged in: register and login route
+	create logout:
+		add logout route
+		import logout_user from flask_login
+	added conditional show of login/register in layout-template
+		if current_user.is_authenticated show logout and account
+		else show login and register
+	create account page 
+		added account.html template
+		added account route
+
+
+Added login restrictions to routes
+	on some routes you muste be logged in
+	add login check to routes
+		if user land on a page where login is required, redirect to login-page
+		add to account with login required decorator
+			from flask_login import login_required
+		add where the login route is located (to the login_manager)
+			in __init__.py
+			also add some bootstrap
+
+Add proper redirection to restricted page after login
+	When logged out user lands on a restricted page and logins, user should be redirected to the page she was trying to access
+	When logged out user tries to access restricted page she is redir to login, the login gets a parameter: http://127.0.0.1:5000/login?next=%2Faccount
+	In the route get this parameter an use this to redirect:
+		from flask import request
+		in login route check if next has a value and if it does redirect to it 
+
+-------------------
+# commit, merge:
+$ git status
+$ git add -A
+$ git commit -a -m 'Sprint 6'
+$ git checkout master # get the master
+$ git merge Sprint06 # merge to master
+$ git branch -d Sprint06 # delete the branch
+
+$ git pull origin master
+$ git push origin master

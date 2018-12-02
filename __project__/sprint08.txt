@@ -1,0 +1,62 @@
+CRUD posts
+
+
+Activate virtualenv
+$ cd ../Environments
+$ source flaskblog_env/bin/activate
+
+# branch it
+$ cd ../flaskblog
+$ git checkout -b Sprint08
+
+------------------
+
+Create a new post page:
+	new route in routes.py:
+		new_post()
+	new html template in templates-folder:
+		create_post.html
+		add from login and change 
+	new form in forms.py:
+		PostForm()
+		logic to handle db 
+	new model in models.py
+	add link in layout.html
+	add logic to save post to db
+
+
+show posts from db in home page:
+	remove dummy data from v2
+	add post to home route
+	change home template
+		date format: %e (non 0 padded day) might not work in all environments, so I used "{date:%A}, {date.day}. {date:%B} {date.year}".format(date=post.date_posted) instead of post.date_posted.strftime('%A, %e. %B %Y')
+ 		add image
+
+update and delete posts:
+	add post route
+	create post template
+	change href link to post id in home template
+	add update_post route
+		import abort-function
+		add to db if OK submit
+		else show current post
+
+Add update/delete links to template
+	add bootstrap modal to post.html
+	create delete route
+
+
+------------------
+
+$ pip list
+$ pip freeze --local > requirements.txt
+
+$ git status
+$ git add -A
+$ git commit -a -m 'Sprint 8'
+$ git checkout master # get the master
+$ git merge Sprint08 # merge to master
+$ git branch -d Sprint08 # delete the branch
+
+$ git pull origin master
+$ git push origin master

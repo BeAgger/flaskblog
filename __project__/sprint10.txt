@@ -1,0 +1,89 @@
+Email and password reset
+
+Generate secure time sensitive token 
+Send email to reset pw
+
+
+
+Activate virtualenv
+$ cd ../Environments
+$ source flaskblog_env/bin/activate
+
+# branch it
+$ cd ../flaskblog
+$ git checkout -b Sprint10
+
+------------------
+
+test package:
+>>> from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+>>> s = Serializer('secret', 30)
+>>> token = s.dumps({'user_id': 1}).decode('utf-8')
+>>> token
+'eyJhbGciOiJIUzUxMiIsImlhoxNTQzMjU5NDExfQ.eyJ1c2VyX2lkIjoxfQ.fSb-TGAVc7niKCHSsH-D0jgZo3aQ5Xocur9MtCAQPWlXdVlPIPjx60CyMmierxDDKt0-k6tC1U39Hm9P-dUldQ'
+>>> s.loads(token)
+{'user_id': 1}
+>>> s.loads(token)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "xxx/site-packages/itsdangerous/jws.py", line 205, in loads
+>>>>>>> 87cf3463039cb0be1defcc4d6031aa9d673c4ebb
+    date_signed=self.get_issue_date(header),
+itsdangerous.exc.SignatureExpired: Signature expired
+>>> 
+
+add methods to user model that creates and validates tokens
+	get_reset_token
+	verify_reset_token
+add two new forms for the routes:
+	RequestResetForm
+	ResetPasswordForm 
+add routes:
+	reset_request()
+	reset_token()
+	add send_reset_email()
+	pip install flask-mail
+	add to __init__.py
+		import flask_mail
+		add constants
+	add env-vars to hold email and password-fields
+add templates:
+	reset_request.html
+	reset_token.html
+add email and password to env-vars:
+	terminal ~
+	$ nano .bash_profile
+		export FLASK_EMAIL_USER="xxx"
+		export FLASK_EMAIL_PW="xxx"
+	$ source ~/.bash_profile # reload it
+	$ python
+	>>> import os
+	>>> os.environ.get('FLASK_EMAIL_USER')
+	__init__.py:
+		import os
+		add envvars to config const
+		init mail
+	route:
+		import mail
+		from flask_mail import Message
+		finalize send_email  
+		finalize reset_token
+	login.html:
+		add link to reset_request to forgot password checkbox
+
+------------------
+
+$ pip list
+$ pip freeze --local > requirements.txt
+
+backup
+
+$ git status
+$ git add -A
+$ git commit -a -m 'Sprint 10'
+$ git checkout master # get the master
+$ git merge Sprint10 # merge to master
+$ git branch -d Sprint10 # delete the branch
+
+$ git pull origin master
+$ git push origin master

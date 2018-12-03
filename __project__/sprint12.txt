@@ -1,0 +1,51 @@
+Custom error pages, new modules
+
+
+
+Activate virtualenv
+$ cd ../Environments
+$ source flaskblog_env/bin/activate
+
+# branch it
+$ cd ../flaskblog
+$ git checkout -b Sprint12
+
+------------------
+
+cd app root
+$ mkdir errors
+$ touch __init__.py
+$ touch handlers.py
+
+import blueprint and instantiate
+
+create routes/handlers to handle 403, 404 and 500 errors
+
+create templates
+cd ../template
+mkdir errors
+touch 403.html, 404.html, 500.html
+add basic layout and errormessages
+added font awesome and link to main/home
+
+flaskblog __init__.py
+import errorhandlers and register with app
+
+
+
+------------------
+
+$ pip list
+$ pip freeze --local > requirements.txt
+
+backup
+
+$ git status
+$ git add -A
+$ git commit -a -m 'Sprint 12'
+$ git checkout master # get the master
+$ git merge Sprint12 # merge to master
+$ git branch -d Sprint12 # delete the branch
+
+$ git pull origin master
+$ git push origin master

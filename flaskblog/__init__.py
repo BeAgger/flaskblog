@@ -39,8 +39,6 @@ login_mgmr.login_message_category = 'info'
 mail = Mail()
 
 # after db create etc since routes uses db etc
-...
-
 
 # App factory function
 def create_app(config_class=Config):
@@ -52,6 +50,7 @@ def create_app(config_class=Config):
             users.routes: user blueprint
             posts.routes: post blueprint
             main.routes: main blueprint
+            error.handlers: error blueprint
     """
     # configuration via Config
     # init the webapp
@@ -63,16 +62,20 @@ def create_app(config_class=Config):
     from flaskblog.users.routes import users
     from flaskblog.posts.routes import posts
     from flaskblog.main.routes import main
+    from flaskblog.errors.handlers import errors
 
     # register the routes to the app
     app.register_blueprint(users)
     app.register_blueprint(posts)
     app.register_blueprint(main)
+    app.register_blueprint(errors)
+
 
     # Initialize extension to app
     db.init_app(app)
     bcrypt_flask.init_app(app)
     login_mgmr.init_app(app)
     mail.init_app(app)
+
 
     return app
